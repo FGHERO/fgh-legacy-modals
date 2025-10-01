@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FGH - Присоединяйся к сообществу!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .profile-avatar::before {
+            content: "FGH";
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Контейнер для названия сообщества */
+        .profile-header {
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin: 0;
+        }
+
+        .subtitle {
+            color: #ccc;
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+
+        .section-title {
+            color: #fff;
+            font-size: 20px;
+            margin: 30px 0 15px;
+            font-weight: 600;
+        }
+
+        .button-group {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            width: 100%;
+            background: linear-gradient(135deg, #333, #444);
+            border: 1px solid #555;
+            color: #fff;
+            padding: 18px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background: linear-gradient(135deg, #444, #555);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+            border-color: #666;
+        }
+
+        .button:active {
+            transform: translateY(0);
+            background: linear-gradient(135deg, #555, #666);
+        }
+
+        /* Иконки в кнопках */
+        .button-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Discord иконка - теперь содержит SVG */
+        .discord-icon {
+            background: #5865F2;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 2px;
+        }
+
+        .discord-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* VKontakte иконка */
+        .vk-icon {
+            background: #4C75A3;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .highlight {
+            color: #4ecdc4;
+            font-weight: 600;
+        }
+
+        /* Дополнительные стили для адаптивности */
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                padding: 20px 15px;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 36px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+            .button {
+                gap: 12px;
+                padding: 16px 18px;
+            }
+
+            .button-icon {
+                width: 22px;
+                height: 22px;
+            }
+
+            .discord-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        /* Анимация появления */
+        .container {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Эффект для заголовка */
+        h1 {
+            animation: gradientShift 3s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-avatar"></div>
+
+        <div class="profile-header">
+            <h1>FGH Community</h1>
+        </div>
+
+        <div class="subtitle">
+            🎮 Присоединяйся к нашему игровому сообществу! 🎮<br><br>
+            Здесь ты найдешь <span class="highlight">помощь</span> от опытных игроков, встретишь <span class="highlight">единомышленников</span> и сможешь участвовать в <span class="highlight">интересном общении</span> по любимой игре.
+        </div>
+
+        <div class="section-title">Наши сообщества</div>
+        <div class="button-group">
+            <a class="button" href="https://discord.gg/3n37wU7sVE" target="_blank" onclick="trackClick('Discord')">
+                <div class="button-icon discord-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                        <path d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.676A348.2,348.2,0,0,0,208.12,430.4a1.86,1.86,0,0,0-1.019-2.588,321.173,321.173,0,0,1-45.868-21.853,1.885,1.885,0,0,1-.185-3.126c3.082-2.309,6.166-4.711,9.109-7.137a1.819,1.819,0,0,1,1.9-.256c96.229,43.917,200.41,43.917,295.5,0a1.812,1.812,0,0,1,1.924.233c2.944,2.426,6.027,4.851,9.132,7.16a1.884,1.884,0,0,1-.162,3.126,301.407,301.407,0,0,1-45.89,21.83,1.875,1.875,0,0,0-1,2.611,391.055,391.055,0,0,0,30.014,48.815,1.864,1.864,0,0,0,2.063.7A486.048,486.048,0,0,0,610.7,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"/>
+                    </svg>
+                </div>
+                Присоединиться к Discord серверу
+            </a>
+            <a class="button" href="https://vk.com/fgh_home" target="_blank" onclick="trackClick('VKontakte')">
+                <div class="button-icon vk-icon">VK</div>
+                Подписаться на группу ВКонтакте
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Добавляем интерактивность к кнопкам
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.button');
+
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 8px 25px rgba(255, 255, 255, 0.15)';
+                });
+
+                button.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '';
+                });
+            });
+        });
+
+        // Функция для отслеживания кликов (можно добавить аналитику)
+        function trackClick(platform) {
+            console.log(`Переход в сообщество: ${platform}`);
+            // Здесь можно добавить отправку аналитики
+        }
+    </script>
+</body>
+</html>
