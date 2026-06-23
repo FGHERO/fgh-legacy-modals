@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riffblade Legend - FGH Next Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #07080d;
+            --panel: rgba(18, 20, 32, 0.94);
+            --panel-soft: rgba(255, 255, 255, 0.07);
+            --line: rgba(255, 255, 255, 0.14);
+            --text: #ffffff;
+            --muted: #c8c9d6;
+            --hot: #ff3d71;
+            --amber: #ffb703;
+            --aqua: #00d4ff;
+            --lime: #74f067;
+            --violet: #9b5cff;
+            --warning: #ffd166;
+        }
+
+        body {
+            background:
+                linear-gradient(135deg, rgba(255, 61, 113, 0.15) 0%, transparent 28%),
+                linear-gradient(225deg, rgba(0, 212, 255, 0.15) 0%, transparent 30%),
+                repeating-linear-gradient(120deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 18px),
+                var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            min-height: 100vh;
+            padding: 18px;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .stage {
+            width: min(940px, 100%);
+            margin: 0 auto;
+            animation: fadeIn 0.55s ease-out;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 22px;
+            min-height: 420px;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+                var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, transparent 0 12%, rgba(255, 61, 113, 0.16) 12% 13%, transparent 13% 24%),
+                linear-gradient(90deg, transparent 0 42%, rgba(0, 212, 255, 0.14) 42% 43%, transparent 43% 60%),
+                linear-gradient(90deg, transparent 0 72%, rgba(116, 240, 103, 0.12) 72% 73%, transparent 73%);
+            pointer-events: none;
+        }
+
+        .hero-content,
+        .fret-display {
+            position: relative;
+            z-index: 1;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .spark {
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            background: linear-gradient(135deg, var(--hot), var(--amber), var(--aqua));
+            transform: rotate(45deg);
+            box-shadow: 0 0 18px rgba(255, 183, 3, 0.8);
+        }
+
+        .language-switch {
+            display: flex;
+            flex-shrink: 0;
+            gap: 4px;
+            padding: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+        }
+
+        .lang-button {
+            border: 0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: var(--muted);
+            background: transparent;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-button.active {
+            color: #11131c;
+            background: linear-gradient(135deg, var(--amber), var(--lime));
+            box-shadow: 0 6px 18px rgba(116, 240, 103, 0.24);
+        }
+
+        h1 {
+            max-width: 620px;
+            font-size: 52px;
+            line-height: 1.08;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 14px;
+            text-shadow: 0 8px 28px rgba(255, 61, 113, 0.25);
+        }
+
+        .gradient-text {
+            display: block;
+            overflow: visible;
+            line-height: 1.18;
+            padding-bottom: 8px;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, var(--hot), var(--amber), var(--aqua), var(--lime));
+            background-size: 220% 100%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 4s ease-in-out infinite;
+        }
+
+        .lead {
+            max-width: 580px;
+            color: #e4e5ef;
+            font-size: 17px;
+            line-height: 1.55;
+            margin-bottom: 22px;
+        }
+
+        .highlight {
+            color: #8fffea;
+            font-weight: 700;
+        }
+
+        .cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: var(--text);
+            font-size: 15px;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .button-primary {
+            color: #11131c;
+            background: linear-gradient(135deg, var(--amber), var(--lime));
+            box-shadow: 0 12px 30px rgba(255, 183, 3, 0.24);
+        }
+
+        .button-secondary {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 16px 34px rgba(0, 212, 255, 0.18);
+        }
+
+        .button-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.22);
+            font-size: 15px;
+            line-height: 1;
+            flex: 0 0 24px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .feature-card {
+            min-height: 96px;
+            padding: 14px;
+            background: var(--panel-soft);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .feature-icon {
+            width: 28px;
+            height: 28px;
+            margin-bottom: 10px;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #11131c;
+            font-weight: 900;
+        }
+
+        .feature-card:nth-child(1) .feature-icon {
+            background: linear-gradient(135deg, var(--aqua), #ffffff);
+        }
+
+        .feature-card:nth-child(2) .feature-icon {
+            background: linear-gradient(135deg, var(--hot), var(--amber));
+        }
+
+        .feature-card:nth-child(3) .feature-icon {
+            background: linear-gradient(135deg, var(--lime), var(--aqua));
+        }
+
+        .feature-card strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .feature-card span {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .fret-display {
+            align-self: stretch;
+            min-height: 350px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02)),
+                linear-gradient(90deg, rgba(255,61,113,0.2), rgba(0,212,255,0.12), rgba(116,240,103,0.14));
+            overflow: hidden;
+            position: relative;
+        }
+
+        .fret-display::before {
+            content: "";
+            position: absolute;
+            inset: 24px 22px 18px;
+            border-left: 2px solid rgba(255, 255, 255, 0.22);
+            border-right: 2px solid rgba(255, 255, 255, 0.22);
+            background:
+                linear-gradient(90deg,
+                    transparent 0 19%,
+                    rgba(255,255,255,0.22) 19% 20%,
+                    transparent 20% 39%,
+                    rgba(255,255,255,0.22) 39% 40%,
+                    transparent 40% 59%,
+                    rgba(255,255,255,0.22) 59% 60%,
+                    transparent 60% 79%,
+                    rgba(255,255,255,0.22) 79% 80%,
+                    transparent 80% 100%),
+                linear-gradient(180deg, rgba(0,0,0,0.34), rgba(0,0,0,0.08));
+            transform: perspective(420px) rotateX(18deg);
+            transform-origin: bottom center;
+        }
+
+        .note {
+            position: absolute;
+            width: 42px;
+            height: 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.34);
+        }
+
+        .note.green { left: 14%; top: 62%; background: var(--lime); }
+        .note.red { left: 32%; top: 42%; background: var(--hot); }
+        .note.yellow { left: 50%; top: 72%; background: var(--amber); }
+        .note.blue { left: 67%; top: 28%; background: var(--aqua); }
+        .note.purple { left: 80%; top: 54%; background: var(--violet); }
+
+        .logo-mark {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(-8deg);
+            width: 150px;
+            height: 150px;
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            border-radius: 8px;
+            background:
+                linear-gradient(135deg, rgba(255, 61, 113, 0.88), rgba(255, 183, 3, 0.82) 45%, rgba(0, 212, 255, 0.82));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #10121b;
+            font-size: 58px;
+            font-weight: 950;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+            box-shadow: 0 18px 40px rgba(255, 61, 113, 0.25);
+        }
+
+        .status-strip {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            bottom: 18px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .meter {
+            padding: 10px 8px;
+            background: rgba(0, 0, 0, 0.34);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .meter strong {
+            display: block;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .meter span {
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .notice {
+            margin-top: 14px;
+            padding: 16px;
+            border: 1px solid rgba(255, 209, 102, 0.38);
+            border-radius: 8px;
+            background: rgba(255, 209, 102, 0.08);
+        }
+
+        .notice-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--warning);
+            font-size: 15px;
+            font-weight: 850;
+            margin-bottom: 10px;
+        }
+
+        .notice ul {
+            padding-left: 20px;
+            color: #ece3c4;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .notice li + li {
+            margin-top: 7px;
+        }
+
+        .lang-panel {
+            display: none;
+        }
+
+        .lang-panel.active {
+            display: block;
+        }
+
+        @media (max-width: 780px) {
+            body {
+                padding: 12px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            h1 {
+                font-size: 40px;
+            }
+
+            .lead {
+                font-size: 15px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .fret-display {
+                min-height: 270px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar,
+            .cta-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .language-switch,
+            .button {
+                width: 100%;
+            }
+
+            .lang-button {
+                flex: 1;
+            }
+
+            h1 {
+                font-size: 34px;
+            }
+
+            .status-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-mark {
+                top: 42%;
+                width: 122px;
+                height: 122px;
+                font-size: 46px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="stage">
+        <section class="hero">
+            <div class="hero-content">
+                <div class="topbar">
+                    <div class="eyebrow">
+                        <span class="spark"></span>
+                        <span data-i18n="eyebrow">FGH переезжает на новый движок</span>
+                    </div>
+
+                    <div class="language-switch" aria-label="Language switch">
+                        <button class="lang-button active" type="button" data-lang-button="ru">RU</button>
+                        <button class="lang-button" type="button" data-lang-button="en">EN</button>
+                    </div>
+                </div>
+
+                <div class="lang-panel active" data-lang-panel="ru">
+                    <h1><span class="gradient-text">Riffblade Legend</span> начинается здесь</h1>
+                    <p class="lead">
+                        Новая игра, в которую будет перенесено управление FGH, но уже на более новом
+                        и качественном движке. <span class="highlight">Никакого больше Flash</span>:
+                        впереди более плавная игра, высокая частота кадров и новые механики.
+                    </p>
+
+                    <div class="cta-row">
+                        <a class="button button-primary" href="https://cutt.ly/fghlstd_v1_0_0-beta-1_2026-06-18" target="_blank">
+                            <span class="button-icon">▶</span>
+                            Скачать тестовый билд
+                        </a>
+                        <a class="button button-secondary" href="https://discord.gg/3n37wU7sVE" target="_blank">
+                            <span class="button-icon">#</span>
+                            Обсудить в Discord
+                        </a>
+                    </div>
+
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">F</div>
+                            <strong>Высокий FPS</strong>
+                            <span>Больше плавности и отзывчивости там, где Flash уже упирался в потолок.</span>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">M</div>
+                            <strong>Новые механики</strong>
+                            <span>Новый движок открывает путь для свежих режимов, эффектов и поведения нот.</span>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">Q</div>
+                            <strong>Качественная база</strong>
+                            <span>Управление FGH остается знакомым, а техническая основа становится современнее.</span>
+                        </div>
+                    </div>
+
+                    <div class="notice">
+                        <div class="notice-title">
+                            <span>!</span>
+                            <span>Примечания к тестовой версии</span>
+                        </div>
+                        <ul>
+                            <li>Это сырая версия, натянутая на FGH Legacy, поэтому часть багов пока ожидаема.</li>
+                            <li>Пауза нужна только для выставления настроек и перезапуска треков. Возобновить трек она не позволит.</li>
+                            <li>После завершения трека нужно выйти в меню и заново открыть трек, если хочется повторить его: новый запуск сейчас тоже забагован.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="lang-panel" data-lang-panel="en">
+                    <h1><span class="gradient-text">Riffblade Legend</span> starts here</h1>
+                    <p class="lead">
+                        A new game that will carry FGH controls forward onto a newer, higher quality engine.
+                        <span class="highlight">No more Flash</span>: expect smoother play, high frame-rate support,
+                        and room for new mechanics.
+                    </p>
+
+                    <div class="cta-row">
+                        <a class="button button-primary" href="https://cutt.ly/fghlstd_v1_0_0-beta-1_2026-06-18" target="_blank">
+                            <span class="button-icon">▶</span>
+                            Download test build
+                        </a>
+                        <a class="button button-secondary" href="https://discord.gg/3n37wU7sVE" target="_blank">
+                            <span class="button-icon">#</span>
+                            Discuss on Discord
+                        </a>
+                    </div>
+
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">F</div>
+                            <strong>High FPS</strong>
+                            <span>Smoother and more responsive gameplay beyond the old Flash limits.</span>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">M</div>
+                            <strong>New mechanics</strong>
+                            <span>The new engine gives space for fresh modes, effects, and note behavior.</span>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">Q</div>
+                            <strong>Better foundation</strong>
+                            <span>FGH controls stay familiar while the technical base becomes more modern.</span>
+                        </div>
+                    </div>
+
+                    <div class="notice">
+                        <div class="notice-title">
+                            <span>!</span>
+                            <span>Test build notes</span>
+                        </div>
+                        <ul>
+                            <li>This is a raw version stretched over FGH Legacy, so some bugs are expected.</li>
+                            <li>Pause is only for changing settings and restarting tracks. It cannot resume the current track.</li>
+                            <li>After a track ends, return to the menu and open it again if you want to replay it: the direct restart flow is also bugged for now.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fret-display" aria-hidden="true">
+                <div class="logo-mark">RL</div>
+                <div class="note green"></div>
+                <div class="note red"></div>
+                <div class="note yellow"></div>
+                <div class="note blue"></div>
+                <div class="note purple"></div>
+
+                <div class="status-strip">
+                    <div class="meter">
+                        <strong>FGH</strong>
+                        <span>controls</span>
+                    </div>
+                    <div class="meter">
+                        <strong>120+</strong>
+                        <span>fps ready</span>
+                    </div>
+                    <div class="meter">
+                        <strong>0</strong>
+                        <span>flash</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            var buttons = document.querySelectorAll('[data-lang-button]');
+            var panels = document.querySelectorAll('[data-lang-panel]');
+            var eyebrow = document.querySelector('[data-i18n="eyebrow"]');
+            var labels = {
+                ru: 'FGH переезжает на новый движок',
+                en: 'FGH moves to a new engine'
+            };
+
+            function setLanguage(lang) {
+                document.documentElement.lang = lang;
+                if (eyebrow) {
+                    eyebrow.textContent = labels[lang];
+                }
+
+                for (var i = 0; i < buttons.length; i++) {
+                    buttons[i].classList.toggle('active', buttons[i].getAttribute('data-lang-button') === lang);
+                }
+
+                for (var j = 0; j < panels.length; j++) {
+                    panels[j].classList.toggle('active', panels[j].getAttribute('data-lang-panel') === lang);
+                }
+            }
+
+            for (var k = 0; k < buttons.length; k++) {
+                buttons[k].addEventListener('click', function () {
+                    setLanguage(this.getAttribute('data-lang-button'));
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
